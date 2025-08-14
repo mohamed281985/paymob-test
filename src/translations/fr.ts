@@ -1,0 +1,25 @@
+export default {
+  // Common
+  "app_name": "IMEI Finder",
+  "loading": "Chargement...",
+  "error": "Erreur",
+  "success": "Succès",
+  "submit": "Soumettre",
+  "cancel": "Annuler",
+  "search": "Rechercher",
+  "next": "Suivant",
+  "previous": "Précédent",
+  "select_language": "Sélectionner la langue",
+  "language_english": "English",
+  "language_arabic": "العربية",
+  "language_french": "Français",
+  "language_hindi": "हिन्दी",
+  "pending": "En Attente",
+  "processing": "Traitement...",
+  "payment_success": "Paiement réussi",
+  "phone_not_found": "Téléphone non trouvé",
+  "phone_registered_success": "Téléphone enregistré avec succès",
+  "invalid_imei": "Le numéro IMEI doit contenir 15 chiffres",
+  "page_not_found": "Page Non Trouvée",
+  "go_home": "Retour à l'Accueil"
+};

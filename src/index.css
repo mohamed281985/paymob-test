@@ -1,0 +1,117 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 186 100% 50%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 222 47% 11%;
+    --primary-foreground: 186 100% 50%;
+
+    --secondary: 186 100% 50%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 222 47% 15%;
+    --accent-foreground: 186 100% 50%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 47% 15%;
+    --input: 222 47% 15%;
+    --ring: 186 100% 50%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 186 100% 50%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 222 47% 11%;
+    --primary-foreground: 186 100% 50%;
+
+    --secondary: 186 100% 50%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 222 47% 15%;
+    --accent-foreground: 186 100% 50%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 186 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-imei-dark text-foreground;
+  }
+}
+
+@layer components {
+  .glowing-text {
+    @apply text-imei-cyan animate-glow;
+  }
+  
+  .glowing-button {
+    @apply bg-gradient-to-r from-imei-button-gradient-from to-imei-button-gradient-to 
+           text-white py-3 px-6 rounded-full font-semibold transition-all duration-300 
+           shadow-[0_0_10px_rgba(0,229,255,0.7)] hover:shadow-[0_0_15px_rgba(0,229,255,0.9)] 
+           focus:outline-none focus:ring-2 focus:ring-imei-cyan focus:ring-opacity-50;
+  }
+  
+  .glowing-button-orange {
+    @apply bg-gradient-to-r from-orange-500 to-amber-500
+           text-white py-3 px-6 rounded-full font-semibold transition-all duration-300 
+           shadow-[0_0_10px_rgba(249,115,22,0.7)] hover:shadow-[0_0_15px_rgba(249,115,22,0.9)]
+           focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50;
+  }
+  
+  .card-container {
+    @apply bg-imei-darker bg-opacity-70 rounded-xl p-4 border border-imei-cyan border-opacity-20;
+  }
+  
+  .input-field {
+    @apply bg-imei-darker text-white rounded-md border border-imei-cyan border-opacity-30 
+           px-4 py-2 focus:outline-none focus:border-imei-cyan focus:border-opacity-80 
+           focus:ring-1 focus:ring-imei-cyan;
+  }
+}
