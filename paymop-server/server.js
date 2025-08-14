@@ -1,21 +1,61 @@
-// تشغيل على Node 18+ (عنده fetch جاهز)
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
+import dotenv from 'dotenv';
+import express from 'express';
+import cors from 'cors';
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 // متغيرات البيئة
-const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY;          // من Paymob Dashboard
-const INTEGRATION_ID  = process.env.PAYMOB_INTEGRATION_ID;   // Integration ID لوسيلة الدفع (بطاقة مثلاً)
-const IFRAME_ID       = process.env.PAYMOB_IFRAME_ID;        // رقم الـ Iframe من Paymob
+const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY;
+const INTEGRATION_ID = process.env.PAYMOB_INTEGRATION_ID;
+const IFRAME_ID = process.env.PAYMOB_IFRAME_ID;
 
-// صحّة السيرفر
+// 🏠 الصفحة الرئيسية
+app.get("/", (req, res) => {
+  res.json({ 
+    status: "✅ Paymob Server Running Successfully",
+    message: "مرحباً! سيرفر Paymob يعمل بنجاح",
+    server_info: {
+      name: "Paymob Payment Server",
+      version: "1.0.0",
+      uptime: Math.floor(process.uptime()) + " seconds",
+      node_version: process.version,
+      platform: process.platform
+    },
+    endpoints: {
+      health: "/health - فحص حالة السيرفر",
+      create_payment: "POST /paymob/create-payment - إنشاء عملية دفع",
+      webhook: "POST /paymob/webhook - استقبال إشعارات الدفع"
+    },
+    environment_status: {
+      api_key: !!PAYMOB_API_KEY ? "✅ متوفر" : "❌ مفقود",
+      integration_id: !!INTEGRATION_ID ? "✅ متوفر" : "❌ مفقود", 
+      iframe_id: !!IFRAME_ID ? "✅ متوفر" : "❌ مفقود"
+    },
+    test_payment_example: {
+      description: "مثال لإنشاء عملية دفع",
+      url: req.protocol + '://' + req.get('host') + '/paymob/create-payment',
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: {
+        amount: 100,
+        email: "test@example.com",
+        name: "أحمد محمد",
+        phone: "01234567890",
+        merchantOrderId: "TEST-001"
+      }
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
+// 🏥 صحة السيرفر
 app.get("/health", (_req, res) => res.send("ok"));
 
-// 1) إنشاء دفع جديد: ترجع payment_token + رابط الـ iframe
+// باقي الكود كما هو...
 app.post("/paymob/create-payment", async (req, res) => {
   try {
     const { amount, email, name, phone, merchantOrderId } = req.body;
@@ -72,8 +112,7 @@ app.post("/paymob/create-payment", async (req, res) => {
           country: "EG",
           last_name: "NA",
           state: "NA"
-        },
-        // تقدر تضيف lock_order_when_paid أو غيره حسب احتياجك
+        }
       })
     });
     const paymentKeyData = await paymentKeyRes.json();
@@ -95,16 +134,13 @@ app.post("/paymob/create-payment", async (req, res) => {
   }
 });
 
-// 2) Webhook لإشعار الدفع الناجح/الفاشل (اختياري لكن مهم)
 app.post("/paymob/webhook", async (req, res) => {
   try {
-    // مبدئيًا: استقبل الجسم وسجّله. أنصحك تتحقق من HMAC حسب توثيق Paymob قبل اعتماد الحالة.
     const payload = req.body;
     console.log("WEBHOOK:", JSON.stringify(payload));
 
-    // مثال بسيط للتحقق المنطقي (مش بديل عن HMAC):
     if (payload?.obj?.success === true && payload?.obj?.pending === false) {
-      // TODO: حدّث اشتراك المستخدم في قاعدة بياناتك بناءً على merchant_order_id أو order.id
+      // TODO: حدّث اشتراك المستخدم في قاعدة بياناتك
     }
 
     res.status(200).send("received");
@@ -114,6 +150,5 @@ app.post("/paymob/webhook", async (req, res) => {
   }
 });
 
-// Render بيمرر PORT في env
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server listening on port", PORT));
